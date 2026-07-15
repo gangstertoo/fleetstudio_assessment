@@ -8,7 +8,7 @@ export default function App() {
       <Route
         path="/"
         element={
-          <Navigate to="/repositories/golemfactory/clay/commit/a1bf367b3af680b1182cc52bb77ba095764a11f" replace />
+          <Navigate to="/repositories/octocat/Hello-World/commit/7fd1a60b01f91b314f59955a4e4d4e80d8edf11d" replace />
         }
       />
       <Route path="*" element={<div className="not-found">Page not found.</div>} />

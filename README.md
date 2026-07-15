@@ -7,7 +7,7 @@ repository, at:
 http://localhost:1234/repositories/:owner/:repository/commit/:commitSHA
 ```
 
-Example: `http://localhost:1234/repositories/golemfactory/clay/commit/a1bf367b3af680b1182cc52bb77ba095764a11f`
+Example: `http://localhost:1234/repositories/octocat/Hello-World/commit/7fd1a60b01f91b314f59955a4e4d4e80d8edf11d`
 
 - **Backend:** Node.js + Express, proxies/normalizes the GitHub REST API.
 - **Frontend:** React (Vite) + React Router, renders the commit metadata and a
@@ -32,7 +32,7 @@ npm start          # starts Express on http://localhost:1234
 ```
 
 Then open, e.g.:
-`http://localhost:1234/repositories/golemfactory/clay/commit/a1bf367b3af680b1182cc52bb77ba095764a11f`
+`http://localhost:1234/repositories/octocat/Hello-World/commit/7fd1a60b01f91b314f59955a4e4d4e80d8edf11d`
 
 ## Optional: GitHub token
 
