@@ -89,11 +89,4 @@ commit-diff-viewer/
 └── SOLUTION.md         # approach, trade-offs, what I'd add with more time
 ```
 
-## Packaging
 
-This repo is set up to be handed over either as a public git URL or as a
-tarball via `npm pack` (which excludes `node_modules`):
-
-```bash
-npm pack
-```
