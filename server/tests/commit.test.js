@@ -1,6 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { jest } from '@jest/globals';
 import request from 'supertest';
 import { createApp } from '../src/app.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const serverPublicDir = path.join(__dirname, '..', 'public');
+const clientDistDir = path.join(__dirname, '..', '..', 'client', 'dist');
+const clientDistIndexPath = path.join(clientDistDir, 'index.html');
 
 const app = createApp();
 
@@ -108,5 +117,18 @@ describe('GET /api/repositories/:owner/:repo/commit/:sha', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.files[0].patch).toBeNull();
+  });
+
+  it('serves the built client from client/dist when server/public is absent', async () => {
+    fs.rmSync(serverPublicDir, { recursive: true, force: true });
+    fs.mkdirSync(clientDistDir, { recursive: true });
+    fs.writeFileSync(clientDistIndexPath, '<!doctype html><html><body>fallback shell</body></html>');
+
+    const res = await request(createApp()).get('/');
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain('fallback shell');
+
+    fs.rmSync(clientDistDir, { recursive: true, force: true });
   });
 });

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-    "copy:client": "rm -rf public && mkdir -p public && cp -r ../client/dist/. ./public/",
+    "copy:client": "node scripts/copy-client.js",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "dependencies": {

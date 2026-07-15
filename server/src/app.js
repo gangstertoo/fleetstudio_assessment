@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import express from 'express';
 import cors from 'cors';
 import path from 'node:path';
@@ -5,10 +6,22 @@ import { fileURLToPath } from 'node:url';
 import { commitRouter } from './routes/commit.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const SERVER_PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const CLIENT_DIST_DIR = path.join(__dirname, '..', '..', 'client', 'dist');
+
+function resolveClientDir() {
+  if (process.env.CLIENT_DIST_DIR) {
+    return process.env.CLIENT_DIST_DIR;
+  }
+
+  return fs.existsSync(SERVER_PUBLIC_DIR) && fs.existsSync(path.join(SERVER_PUBLIC_DIR, 'index.html'))
+    ? SERVER_PUBLIC_DIR
+    : CLIENT_DIST_DIR;
+}
 
 export function createApp() {
   const app = express();
+  const clientDir = resolveClientDir();
 
   app.use(cors());
   app.use(express.json());
@@ -17,11 +30,11 @@ export function createApp() {
   app.use('/api', commitRouter);
 
   // Serve the built React app (produced by `npm run build`).
-  app.use(express.static(PUBLIC_DIR));
+  app.use(express.static(clientDir));
 
   // Client-side routing: send index.html for any non-API GET request.
   app.get(/^(?!\/api).*/, (req, res, next) => {
-    res.sendFile(path.join(PUBLIC_DIR, 'index.html'), (err) => {
+    res.sendFile(path.join(clientDir, 'index.html'), (err) => {
       if (err) next(err);
     });
   });
